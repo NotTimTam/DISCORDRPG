@@ -1,4 +1,45 @@
 {
+    "fight_active": false,
     "users": {
+        "Temmrie": {
+            "category": "Tem Shop Owner",
+            "level": 1,
+            "health": 0.98,
+            "inventory": {
+                "sword": 1,
+                "coins": 12,
+                "Vanjin the Drunk's head": 1,
+                "Nuenvan the Fire-Breather's head": 1
+            }
+        },
+        "TimTam": {
+            "category": "Cram Seller",
+            "level": 1,
+            "health": 10,
+            "inventory": {
+                "sword": 1,
+                "coins": 5
+            }
+        },
+        "Fixxxer": {
+            "category": "rogue",
+            "level": 1,
+            "health": 10,
+            "inventory": {
+                "sword": 1,
+                "coins": 5,
+                "Ronjaty the Powerful's head": 1
+            }
+        },
+        "GoldyChicken": {
+            "category": "Changing It Get Out Of Here",
+            "level": 1,
+            "health": 1880.23,
+            "inventory": {
+                "sword": 1,
+                "coins": 15,
+                "Seshi the Powerful's head": 1
+            }
+        }
     }
 }

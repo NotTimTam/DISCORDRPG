@@ -2,7 +2,7 @@
 import random, json
 
 # Open Data File.
-with open('shop.json') as json_file:
+with open('shops.json') as json_file:
     shopdata = json.load(json_file)
 
 
@@ -13,5 +13,5 @@ def check_shop(shopdata):
         string = str(i) + " | " + str(shopdata['shop'][i])
         shop.append(string)
     return shop
-    with open('shop.json', 'w') as outfile:
+    with open('shops.json', 'w') as outfile:
         json.dump(shopdata, outfile, indent=4)

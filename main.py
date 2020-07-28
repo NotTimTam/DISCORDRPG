@@ -106,8 +106,16 @@ async def consume(ctx, *, itemname):
 # Check shop.
 @bot.command(name='shop', help="Consume an item.")
 async def shop(ctx):
-    response = shops.check_shop(shops.data)
+    lst = shops.check_shop(shops.shopdata)
+    response = ":shopkeeper: **" + formatter(str(ctx.message.author)) + "'s INVENTORY** :scroll:"
     await ctx.send(response)
+    response = "-" * len(response)
+    await ctx.send(response)
+    e=1
+    for re in lst:
+      r = str(e) + ". " + str(re)
+      await ctx.send(r)
+      e+=1
 
 
 """COMMANDS FOR BOSSFIGHTS"""
