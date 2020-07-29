@@ -3,28 +3,48 @@
     "users": {
         "Temmrie": {
             "category": "Tem Shop Owner",
-            "level": 1,
-            "health": 0.98,
+            "level": 2,
+            "health": 17.64,
+            "luck": 1,
             "inventory": {
                 "sword": 1,
-                "coins": 12,
+                "coins": 4988,
                 "Vanjin the Drunk's head": 1,
-                "Nuenvan the Fire-Breather's head": 1
+                "Nuenvan the Fire-Breather's head": 1,
+                "health potion": 1,
+                "Ziataja the Demonic's head": 1,
+                "Vanjin the Fire-Breather's head": 1,
+                "Tzane the Powerful's head": 1,
+                "Tzane the Inevitable's head": 1,
+                "Thanos the All-Seeing's head": 1,
+                "dog residue": 1
             }
         },
         "TimTam": {
-            "category": "Cram Seller",
-            "level": 1,
-            "health": 10,
+            "category": "Seller of Cram",
+            "level": 11,
+            "health": 1918.06,
+            "luck": 14,
             "inventory": {
                 "sword": 1,
-                "coins": 5
+                "coins": 976951,
+                "health potion": 0,
+                "mysterious bag": 1,
+                "ancient relic": 1,
+                "dog residue": 1,
+                "lucky dog tail": 0,
+                "Yesha the Drunk's head": 1,
+                "Ejie the Crazed's head": 1,
+                "very-berry cram": 0,
+                "Tzane the Godlike's head": 1,
+                "Ziataja the Hideous's head": 1
             }
         },
         "Fixxxer": {
             "category": "rogue",
             "level": 1,
             "health": 10,
+            "luck": 1,
             "inventory": {
                 "sword": 1,
                 "coins": 5,
@@ -33,12 +53,79 @@
         },
         "GoldyChicken": {
             "category": "Changing It Get Out Of Here",
-            "level": 1,
-            "health": 1880.23,
+            "level": 2,
+            "health": 1952.53,
+            "luck": 1,
             "inventory": {
                 "sword": 1,
-                "coins": 15,
-                "Seshi the Powerful's head": 1
+                "coins": 500,
+                "Seshi the Powerful's head": 1,
+                "Vuzembi the Wise's head": 1,
+                "berry cram": 0,
+                "raspberry cram": 0
+            }
+        },
+        "Crow": {
+            "category": "ULTRA-BOSS",
+            "level": 1,
+            "health": 7.8,
+            "luck": 1,
+            "inventory": {
+                "sword": 1,
+                "coins": 6,
+                "Rhazin the All-Seeing's head": 1
+            }
+        },
+        "Q2OD": {
+            "category": "Q2OD boss",
+            "level": 3,
+            "health": 449.8,
+            "luck": 1,
+            "inventory": {
+                "sword": 1,
+                "coins": 13,
+                "health potion": 27,
+                "Meenah the All-Seeing's head": 1,
+                "very-berry cram": 0
+            }
+        },
+        "Katie": {
+            "category": "Servant of His Grace CRAM",
+            "level": 1,
+            "health": 10,
+            "luck": 0,
+            "inventory": {
+                "sword": 1,
+                "coins": 5,
+                "Vuzembi the Destroyer's head": 1
+            }
+        },
+        "Chancerz26": {
+            "category": "Duck Tamer",
+            "level": 1,
+            "health": 10,
+            "luck": 1,
+            "inventory": {
+                "sword": 1,
+                "coins": 9789,
+                "health potion": 23,
+                "very-berry cram": 1,
+                "Nuenvan the Godlike's head": 1,
+                "Kanjin the Destroyer's head": 1
+            }
+        },
+        "N00qt": {
+            "category": "GucciGang",
+            "level": 6,
+            "health": 446.46,
+            "luck": 1,
+            "inventory": {
+                "sword": 1,
+                "coins": 648,
+                "Vonjai the Inevitable's head": 1,
+                "health potion": 16,
+                "Thanos the Wise's head": 1,
+                "Thanos the Drunk's head": 1
             }
         }
     }

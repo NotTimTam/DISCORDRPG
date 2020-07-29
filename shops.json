@@ -1,7 +1,19 @@
 {
     "shop": {
-        "health potion": 999,
-        "mysterious bag": 999,
-        "cram": 999
+        "health potion": 5,
+        "mysterious bag": 100,
+        "raspberry cram": 5,
+        "berry cram": 50,
+        "very-berry cram": 100,
+        "lucky dog tail": 60
+    },
+    "item_desc": {
+      "health potion": "heals you to half **HP**",
+        "mysterious bag": "has a 1/5 chance of dropping an **ancient** item...",
+        "raspberry cram": "heals you to half **HP**",
+        "berry cram": "heals you to full **HP**",
+        "very-berry cram": "heals you to double **HP**",
+        "lucky dog tail": "increases your **LK**",
+        "ancient relic": "summons the ***end of time.***"
     }
 }

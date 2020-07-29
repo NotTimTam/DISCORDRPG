@@ -2,6 +2,7 @@
 import random, json
 from users import data
 from users import *
+import users
 
 
 # Check if a fight is active.
@@ -18,11 +19,12 @@ def fight_active(data):
 names = [
     'Wanjin', 'Malak', 'Sligo', 'Vuzembi', 'Makas', 'Jumoke', 'Nuenvan',
     'Seshi', 'Tzane', 'Rhazin', 'Yesha', 'Valja', 'Meenah', 'Zulmara',
-    'Vanjin', 'Ronjaty', 'Ziataja', 'Ejie', 'Kanjin', 'Vonjai', 'Thanos'
+    'Vanjin', 'Ronjaty', 'Ziataja', 'Ejie', 'Kanjin', 'Vonjai', 'Thanos',
+    'Shrek'
 ]
 status = [
     'Wise', 'Powerful', 'Godlike', 'Demented', 'Vengeful', 'Drunk', 'Crazed',
-    'Infuriated', 'Fire-Breather', 'Tainted', 'Demonic', 'Destroyer',
+    'Infuriated', 'Fire-Breather', 'CRAM', 'Demonic', 'Destroyer',
     'Inevitable', 'Conquerer', 'All-Knowing', 'All-Seeing', 'Timeless',
     'Taboo', 'Hideous', 'Ugly'
 ]
@@ -46,7 +48,7 @@ def start_fight(data, name):
         # Create difficulty settings.
         starter_level = data['users'][name]['level']
         difficulty_vector = round(random.uniform(1.0, 2.0), 2)
-        difficulty = round((starter_level * difficulty_vector),2)
+        difficulty = round((starter_level * difficulty_vector), 2)
 
         # Create name.
         bossname = boss_namer()
@@ -69,7 +71,8 @@ def start_fight(data, name):
             json.dump(data, outfile, indent=4)
 
         ret = ":crossed_swords: **" + name + "** started a fight at *difficulty* level **" + str(
-            difficulty) + "** with ***" + bossname + "***! :crossed_swords:"
+            difficulty
+        ) + "** with <:meektroll:737813064350433481>***" + bossname + "***! :crossed_swords:"
         return ret
     else:
         return ":scroll: Finish the current fight before starting another one... :scroll:"
@@ -118,13 +121,20 @@ def damage_boss(data, damage_from):
             else:
                 data['users'][fight_starter]['inventory'][head] = 1
             for i in data['users']['boss']['attackers']:
-                coins = round((data['users']['boss']['attackers'][i]) * round(
-                    random.uniform(0.5, 3.0), 1))
+                if get_luck(users.data, damage_from) == False:
+                  coins = round(round((data['users']['boss']['attackers'][i]) * round(
+                      random.uniform(0.5, 3.0), 1)) * (data['users']['boss']['difficulty']))
+                else:
+                  luck = data['users'][i]['luck']
+                  coins = round(round((data['users']['boss']['attackers'][i]) * round(random.uniform(0.5, 3.0), 1)) * (data['users']['boss']['attackers'][i]) * luck * (data['users']['boss']['difficulty']))
                 data['users'][i]['inventory']['coins'] += coins
                 loot_list.append("**" + i + "** got **" + str(coins) +
                                  "** coins!")
-                data['users'][i]['level'] += random.choice([0,1])
-            ret = ":crossed_swords: **" + name + "** took **" + str(
+                if get_luck(users.data, damage_from) == True:
+                  data['users'][i]['level'] += 2
+                else:
+                  data['users'][i]['level'] += 1
+            ret = ":crossed_swords: <:meektroll:737813064350433481>**" + name + "** took **" + str(
                 amount
             ) + "** damage from **" + damage_from + "**! Killing them instantly. The fight is now over. Congrats! :crossed_swords:\n\n:moneybag:**LOOT**:moneybag:"
             for i in loot_list:
@@ -135,12 +145,12 @@ def damage_boss(data, damage_from):
                 json.dump(data, outfile, indent=4)
             return ret
         else:
-            damage = round(give_damage(data),2)
-            ret = ":crossed_swords: **" + name + "** took **" + str(
+            damage = round(give_damage(data), 2)
+            ret = ":crossed_swords: <:meektroll:737813064350433481>**" + name + "** took **" + str(
                 amount
             ) + "** damage! Leaving them with **" + str(
                 data['users']['boss']['health']
-            ) + "** health... :crossed_swords:\n" + ":crossed_swords: **" + name + "** retaliated against **" + damage_from + "** with **" + str(
+            ) + "** health... :crossed_swords:\n" + ":crossed_swords: <:meektroll:737813064350433481>**" + name + "** retaliated against **" + damage_from + "** with **" + str(
                 damage) + "** damage! :crossed_swords:\n" + str(
                     damage_player(data, damage_from, damage))
             return ret

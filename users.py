@@ -7,7 +7,10 @@ with open('users.json') as json_file:
     data = json.load(json_file)
 
 # List of consumable items...
-consumables = ['health potion', 'mysterious bag', 'ancient relic', 'cram']
+consumables = [
+    'health potion', 'mysterious bag', 'ancient relic', 'raspberry cram',
+    'berry cram', 'very-berry cram', 'dog residue', 'lucky dog tail'
+]
 
 
 # Create a user.
@@ -20,6 +23,7 @@ def create_user(data, name, category):
                 'category': category,
                 'level': 1,
                 'health': 10,
+                'luck': 1, #PLEASE GOSH LEAVE THIS AT ONE OR THE WHOLE F*CKING THING BREAKS
                 'inventory': {
                     'sword': 1,
                     'coins': 5
@@ -87,8 +91,10 @@ def get_inventory(data=data, name='username'):
             inv.append(string)
         return inv
     else:
+        inv=[]
         ret = "**" + name + "** doesn't exist!"
-        return ret
+        inv.append(ret)
+        return inv
 
 
 # Check if user has a certain amount of money.
@@ -128,9 +134,10 @@ def check_stats(data=data, name='username'):
         data = json.load(json_file)
     if user_exists(data, name):
         stats = []
-        stats.append("Class | " + str(data['users'][name]['category']))
-        stats.append("Level | " + str(data['users'][name]['level']))
-        stats.append("Health | " + str(data['users'][name]['health']))
+        stats.append("CLS | " + str(data['users'][name]['category']))
+        stats.append("LVL | " + str(data['users'][name]['level']))
+        stats.append("HP | " + str(data['users'][name]['health']))
+        stats.append("LK | " + str(data['users'][name]['luck']))
         return stats
     else:
         ret = ":no_entry_sign: **" + name + "** doesn't exist! :no_entry_sign:"
@@ -140,11 +147,13 @@ def check_stats(data=data, name='username'):
 # Purchase item for user.
 def make_purchase(data=data,
                   name='username',
-                  price=1,
                   item="healing potion",
                   item_count=1):
     with open('users.json') as json_file:
         data = json.load(json_file)
+    with open('shops.json') as json_file2:
+        shopdata = json.load(json_file2)
+    price = shopdata['shop'][item]
     if user_exists(data, name):
         if check_balance(data, name, price):
             data['users'][name]['inventory']['coins'] -= price
@@ -154,8 +163,8 @@ def make_purchase(data=data,
                 data['users'][name]['inventory'][item] = 1
             with open('users.json', 'w') as outfile:
                 json.dump(data, outfile, indent=4)
-            ret = "**" + name + "** purchased **" + str(
-                item_count) + " " + item + "** for **$" + str(price) + "**..."
+            ret = ":moneybag: **" + name + "** purchased **" + str(
+                item_count) + " " + item + "** for **$" + str(price) + "**... :moneybag:"
             return ret
         else:
             return ":no_entry_sign:  Failed to make purchase. Not Enough money... :no_entry_sign:"
@@ -211,9 +220,9 @@ def damage_player(data=data, name='username', amount=1):
         if data['users'][name]['health'] <= 0:
             data['users'][name]['health'] = (
                 10 * data['users'][name]['level']) / 2
-            ret = ":dizzy_face: **" + name + "** took **" + str(
+            ret = "<:skeleton:738111625344843898> **" + name + "** took **" + str(
                 amount
-            ) + "** damage! *Killing* them instantly.\nThey have now been revived to half HP at the cost of 5 gold coins. :dizzy_face:"
+            ) + "** damage! *Killing* them instantly.\nThey have now been revived to half HP at the cost of 5 gold coins. <:skeleton:738111625344843898>"
             if data['users'][name]['inventory']['coins'] >= 5:
                 data['users'][name]['inventory']['coins'] -= 5
             elif data['users'][name]['inventory']['coins'] < 5:
@@ -238,9 +247,10 @@ def player_give_damage(data, name):
     with open('users.json') as json_file:
         data = json.load(json_file)
     if user_exists(data, name):
+        luck = data['users'][name]['luck']
         level = data['users'][name]['level']
         damage_vector = round(random.uniform(1.0, 4.0), 2)
-        damage = level * damage_vector
+        damage = (level * damage_vector) + random.randrange(0, luck)
         return damage
     else:
         ret = ":no_entry_sign: **" + name + "** doesn't exist! :no_entry_sign:"
@@ -296,10 +306,44 @@ def consume_item(data=data, name='username', itemname='item'):
                         json.dump(data, outfile, indent=4)
                     ret = ":package: **" + name + "** consumed their **" + itemname + "** for half HP!:package:"
                     return ret
+                if itemname == 'raspberry cram':
+                    data['users'][name]['health'] += (
+                        (10 * data['users'][name]['level']) / 2)
+                    with open('users.json', 'w') as outfile:
+                        json.dump(data, outfile, indent=4)
+                    ret = ":package: **" + name + "** consumed their **" + itemname + "** for half HP!:package:"
+                    return ret
+                if itemname == 'berry cram':
+                    data['users'][name]['health'] += ((
+                        10 * data['users'][name]['level']))
+                    with open('users.json', 'w') as outfile:
+                        json.dump(data, outfile, indent=4)
+                    ret = ":package: **" + name + "** consumed their **" + itemname + "** for full HP!:package:"
+                    return ret
+                if itemname == 'very-berry cram':
+                    data['users'][name]['health'] += (
+                        (10 * data['users'][name]['level']) * 2)
+                    with open('users.json', 'w') as outfile:
+                        json.dump(data, outfile, indent=4)
+                    ret = ":package: **" + name + "** consumed their **" + itemname + "** for double HP!:package:"
+                    return ret
+                if itemname == 'lucky dog tail':
+                    luck=random.choice([1,2,3])
+                    data['users'][name]['luck'] += luck
+                    with open('users.json', 'w') as outfile:
+                        json.dump(data, outfile, indent=4)
+                    ret = ":package: **" + name + "** consumed their **" + itemname + "** for **" + str(luck) + "** extra luck! :package:"
+                    return ret
                 elif itemname == 'ancient relic':
                     with open('users.json', 'w') as outfile:
                         json.dump(data, outfile, indent=4)
                     ret = ":package: **" + name + "** consumed their **" + itemname + "**... *Nothing* happened.:package:"
+                    return ret
+                elif itemname == 'dog residue':
+                    data['users'][name]['inventory'][itemname] += 999
+                    with open('users.json', 'w') as outfile:
+                        json.dump(data, outfile, indent=4)
+                    ret = ":package: **" + name + "** consumed their **" + itemname + "**... Their inventory is flooded with **dog residue**! :package:"
                     return ret
                 elif itemname == 'mysterious bag':
                     bagdrop = random.choice([
@@ -326,6 +370,29 @@ def consume_item(data=data, name='username', itemname='item'):
     with open('users.json', 'w') as outfile:
         json.dump(data, outfile, indent=4)
 
+
+# User Sniff.
+def sniff(data, name, thing):
+    ret = ":nose: **" + name + "** sniffed the **" + thing + "**... It smells like a **" + thing + "** :nose:"
+    return ret
+
+# Calculate luck.
+def get_luck(data=data, name='username'):
+    with open('users.json') as json_file:
+        data = json.load(json_file)
+    if user_exists(data, name):
+        luck = data['users'][name]['luck']
+        lucky_chance = []
+        lucky_chance.append(luck * '1')
+        lucky_chance.append(random.randrange(1,100)*"0")
+        lucky_choice = random.choice(lucky_chance)
+        if lucky_choice == "1":
+          return True
+        else:
+          return False
+    else:
+        ret = ":no_entry_sign: **" + name + "** doesn't exist! :no_entry_sign:"
+        return ret
 
 # Examples.
 # print(check_class(data, "TimTam"))

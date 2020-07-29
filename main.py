@@ -82,6 +82,9 @@ async def stats(ctx):
       if e==3:
         r = ":heart: " + str(re)
         await ctx.send(r)
+      if e==4:
+        r = ":fingers_crossed: " + str(re)
+        await ctx.send(r)
       e+=1
 
 # Give another player an item.
@@ -104,18 +107,36 @@ async def consume(ctx, *, itemname):
     await ctx.send(response)
 
 # Check shop.
-@bot.command(name='shop', help="Consume an item.")
+@bot.command(name='shop', help="Check the shop.")
 async def shop(ctx):
     lst = shops.check_shop(shops.shopdata)
-    response = ":shopkeeper: **" + formatter(str(ctx.message.author)) + "'s INVENTORY** :scroll:"
+    response = '<:shopkeeper:737779800139366421> **"WELCOME TO MY SHOP"**'
     await ctx.send(response)
-    response = "-" * len(response)
+    response = "-" * (len(response) - len('<:shopkeeper:7377798000'))
     await ctx.send(response)
     e=1
     for re in lst:
       r = str(e) + ". " + str(re)
       await ctx.send(r)
       e+=1
+
+# Purchase item.
+@bot.command(name='buy', help="Purchase items.")
+async def shop(ctx, *, item):
+    response = users.make_purchase(users.data, formatter(str(ctx.message.author)), item, 1)
+    await ctx.send(response)
+
+# Sniff thing.
+@bot.command(name='sniff', hidden=True)
+async def shop(ctx, *, thing):
+    response = users.sniff(users.data, formatter(str(ctx.message.author)), thing)
+    await ctx.send(response)
+
+# Get item description.
+@bot.command(name='whatis', help="Get item description. Format: <rpg.whatis ItemName>")
+async def whatis(ctx, *, thing):
+    response = shops.describe_item(users.data, thing)
+    await ctx.send(response)
 
 
 """COMMANDS FOR BOSSFIGHTS"""
@@ -126,7 +147,7 @@ async def start_fight(ctx):
     await ctx.send(response)
 
 # Attack boss...
-@bot.command(name='attack', help="Begin a boss fight.")
+@bot.command(name='attack', help="Attack a boss.")
 async def deal_damage(ctx):
     response = arenas.damage_boss(users.data, formatter(str(ctx.message.author)))
     await ctx.send(response)
