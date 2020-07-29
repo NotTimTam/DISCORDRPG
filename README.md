@@ -1,2 +1,2 @@
-# DISCORDRPG
+# OurPG
 An RPG bot for Discord...
