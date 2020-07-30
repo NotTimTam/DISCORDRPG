@@ -21,4 +21,5 @@ def describe_item(shopdata, itemname):
     with open('shops.json') as json_file:
       shopdata = json.load(json_file)
     itm = shopdata['item_desc'][itemname]
-    return itm
+    itm_desc = "**" + itemname + "** " + itm
+    return itm_desc

@@ -121,14 +121,14 @@ async def shop(ctx):
       e+=1
 
 # Purchase item.
-@bot.command(name='buy', help="Purchase items.")
-async def shop(ctx, *, item):
+@bot.command(name='buy', help="Purchase items. Format: <rpg.buy ItemName>")
+async def buy(ctx, *, item):
     response = users.make_purchase(users.data, formatter(str(ctx.message.author)), item, 1)
     await ctx.send(response)
 
 # Sniff thing.
 @bot.command(name='sniff', hidden=True)
-async def shop(ctx, *, thing):
+async def sniff(ctx, *, thing):
     response = users.sniff(users.data, formatter(str(ctx.message.author)), thing)
     await ctx.send(response)
 
@@ -138,6 +138,11 @@ async def whatis(ctx, *, thing):
     response = shops.describe_item(users.data, thing)
     await ctx.send(response)
 
+# Get item description.
+@bot.command(name='sell', help="Sell items. Format: <rpg.sell ItemName>")
+async def sell(ctx, *, item):
+    response = users.sell_item(users.data, formatter(str(ctx.message.author)), item, 1)
+    await ctx.send(response)
 
 """COMMANDS FOR BOSSFIGHTS"""
 # Start fight

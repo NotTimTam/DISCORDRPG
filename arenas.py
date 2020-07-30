@@ -114,12 +114,16 @@ def damage_boss(data, damage_from):
             with open('users.json') as json_file:
                 data = json.load(json_file)
             # LOOT
+            """ ADDING HEADS IS TURNED OFF FOR NOW
+            
             fight_starter = data['users']['boss']['fight_starter']
             head = name + "'s head"
             if head in data['users'][fight_starter]['inventory']:
                 data['users'][fight_starter]['inventory'][head] += 1
             else:
                 data['users'][fight_starter]['inventory'][head] = 1
+            
+            """  
             for i in data['users']['boss']['attackers']:
                 if get_luck(users.data, damage_from) == False:
                   coins = round(round((data['users']['boss']['attackers'][i]) * round(

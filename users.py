@@ -23,7 +23,8 @@ def create_user(data, name, category):
                 'category': category,
                 'level': 1,
                 'health': 10,
-                'luck': 1, #PLEASE GOSH LEAVE THIS AT ONE OR THE WHOLE F*CKING THING BREAKS
+                'luck':
+                1,  #PLEASE GOSH LEAVE THIS AT ONE OR THE WHOLE F*CKING THING BREAKS
                 'inventory': {
                     'sword': 1,
                     'coins': 5
@@ -84,6 +85,7 @@ def check_class(data=data, name='username'):
 def get_inventory(data=data, name='username'):
     with open('users.json') as json_file:
         data = json.load(json_file)
+    data = clean_inventory(data, name)
     if user_exists(data, name):
         inv = []
         for i in data['users'][name]['inventory']:
@@ -91,7 +93,7 @@ def get_inventory(data=data, name='username'):
             inv.append(string)
         return inv
     else:
-        inv=[]
+        inv = []
         ret = "**" + name + "** doesn't exist!"
         inv.append(ret)
         return inv
@@ -101,6 +103,7 @@ def get_inventory(data=data, name='username'):
 def check_balance(data=data, name='username', price=1):
     with open('users.json') as json_file:
         data = json.load(json_file)
+    data = clean_inventory(data, name)
     if user_exists(data, name):
         if data['users'][name]['inventory']['coins'] >= price:
             return True
@@ -115,6 +118,7 @@ def check_balance(data=data, name='username', price=1):
 def check_item(data=data, name='username', item='item name', amount=1):
     with open('users.json') as json_file:
         data = json.load(json_file)
+    data = clean_inventory(data, name)
     if user_exists(data, name):
         try:
             if data['users'][name]['inventory'][item] >= amount:
@@ -153,6 +157,7 @@ def make_purchase(data=data,
         data = json.load(json_file)
     with open('shops.json') as json_file2:
         shopdata = json.load(json_file2)
+    data = clean_inventory(data, name)
     price = shopdata['shop'][item]
     if user_exists(data, name):
         if check_balance(data, name, price):
@@ -164,10 +169,41 @@ def make_purchase(data=data,
             with open('users.json', 'w') as outfile:
                 json.dump(data, outfile, indent=4)
             ret = ":moneybag: **" + name + "** purchased **" + str(
-                item_count) + " " + item + "** for **$" + str(price) + "**... :moneybag:"
+                item_count) + " " + item + "** for **$" + str(
+                    price) + "**... :moneybag:"
             return ret
         else:
             return ":no_entry_sign:  Failed to make purchase. Not Enough money... :no_entry_sign:"
+    else:
+        ret = "**" + name + "** doesn't exist!"
+        return ret
+
+
+# Sell item to shop.
+def sell_item(data=data, name='username', item="healing potion", item_count=1):
+    with open('users.json') as json_file:
+        data = json.load(json_file)
+    with open('shops.json') as json_file2:
+        shopdata = json.load(json_file2)
+    data = clean_inventory(data, name)
+    if user_exists(data, name):
+        if check_item(data, name, item, item_count):
+            if item in shopdata['shop']:
+                price = shopdata['shop'][item] / 2
+                data['users'][name]['inventory'][item] -= 1
+                ret = ":moneybag: **" + name + "** sold **" + str(
+                    item_count) + " " + item + "** for **$" + str(
+                        price) + "**... :moneybag:"
+                with open('users.json', 'w') as outfile:
+                    json.dump(data, outfile, indent=4)
+                return ret
+            else:
+                ret = ":no_entry_sign: The shopkeeper refuses to buy that item off of you... :no_entry_sign:"
+                return ret
+        else:
+            ret = ret = ":no_entry_sign: **" + name + "** doesn't have any **" + item + "**... :no_entry_sign:"
+            with open('users.json', 'w') as outfile:
+                json.dump(data, outfile, indent=4)
     else:
         ret = "**" + name + "** doesn't exist!"
         return ret
@@ -181,6 +217,7 @@ def give_item(data=data,
               item_count=1):
     with open('users.json') as json_file:
         data = json.load(json_file)
+    data = clean_inventory(data, name)
     if user_exists(data, name):
         if user_exists(data, other_person):
             if check_item(data, name, item, item_count) == True:
@@ -276,6 +313,7 @@ def change_class(data, name, value):
 def give_player_item(data=data, name='username', itemname="item", amount=1):
     with open('users.json') as json_file:
         data = json.load(json_file)
+    data = clean_inventory(data, name)
     if user_exists(data, name):
         if itemname in data['users'][name]['inventory']:
             data['users'][name]['inventory'][itemname] += amount
@@ -295,6 +333,7 @@ def give_player_item(data=data, name='username', itemname="item", amount=1):
 def consume_item(data=data, name='username', itemname='item'):
     with open('users.json') as json_file:
         data = json.load(json_file)
+    data = clean_inventory(data, name)
     if user_exists(data, name):
         if check_item(data, name, itemname, 1) == True:
             if itemname in consumables:
@@ -328,11 +367,12 @@ def consume_item(data=data, name='username', itemname='item'):
                     ret = ":package: **" + name + "** consumed their **" + itemname + "** for double HP!:package:"
                     return ret
                 if itemname == 'lucky dog tail':
-                    luck=random.choice([1,2,3])
+                    luck = random.choice([1, 2, 3])
                     data['users'][name]['luck'] += luck
                     with open('users.json', 'w') as outfile:
                         json.dump(data, outfile, indent=4)
-                    ret = ":package: **" + name + "** consumed their **" + itemname + "** for **" + str(luck) + "** extra luck! :package:"
+                    ret = ":package: **" + name + "** consumed their **" + itemname + "** for **" + str(
+                        luck) + "** extra luck! :package:"
                     return ret
                 elif itemname == 'ancient relic':
                     with open('users.json', 'w') as outfile:
@@ -376,6 +416,7 @@ def sniff(data, name, thing):
     ret = ":nose: **" + name + "** sniffed the **" + thing + "**... It smells like a **" + thing + "** :nose:"
     return ret
 
+
 # Calculate luck.
 def get_luck(data=data, name='username'):
     with open('users.json') as json_file:
@@ -384,15 +425,37 @@ def get_luck(data=data, name='username'):
         luck = data['users'][name]['luck']
         lucky_chance = []
         lucky_chance.append(luck * '1')
-        lucky_chance.append(random.randrange(1,100)*"0")
+        lucky_chance.append(random.randrange(1, 100) * "0")
         lucky_choice = random.choice(lucky_chance)
         if lucky_choice == "1":
-          return True
+            return True
         else:
-          return False
+            return False
     else:
         ret = ":no_entry_sign: **" + name + "** doesn't exist! :no_entry_sign:"
         return ret
+
+
+# Remove empty items from inventory.
+def clean_inventory(data, name):
+    with open('users.json') as json_file:
+        data = json.load(json_file)
+    if user_exists(data, name):
+        destroy = []
+        for i in data['users'][name]['inventory']:
+            if data['users'][name]['inventory'][i] == 0:
+                destroy.append(i)
+        for i in destroy:
+            del data['users'][name]['inventory'][i]
+        with open('users.json', 'w') as outfile:
+            json.dump(data, outfile, indent=4)
+        with open('users.json') as json_file:
+          data = json.load(json_file)
+        return data
+    else:
+        ret = ":no_entry_sign: **" + name + "** doesn't exist! :no_entry_sign:"
+        return ret
+
 
 # Examples.
 # print(check_class(data, "TimTam"))
